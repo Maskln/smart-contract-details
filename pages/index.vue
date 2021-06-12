@@ -17,7 +17,9 @@ export default class MainPage extends Vue {}
 </script>
 <style>
 .container {
-  margin: 0 auto;
+  background: #F8F9FA;
+  margin: 20px;
+  width: 100%;
   min-height: 100vh;
   display: flex;
 }

@@ -22,6 +22,7 @@
     "@nuxt/types": "^2.15.3",
     "@nuxt/typescript-build": "^2.1.0",
     "eslint": "^7.28.0",
-    "eslint-plugin-vue": "^7.11.0"
+    "eslint-plugin-vue": "^7.11.0",
+    "vuex-module-decorators": "^1.0.1"
   }
 }
