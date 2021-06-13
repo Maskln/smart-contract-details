@@ -19,12 +19,13 @@ class ProvidersStore extends VuexModule {
 		let etherscanProvider = new ethers.providers.EtherscanProvider()
 		let latestTenTransactions: any = []
 		let result: TransactionDto[] = []
+		
 		let history = await etherscanProvider.getHistory(smartContractAddress)
 
 		latestTenTransactions = sortBy(history, [(e: any) => {
 			return e.blockNumber
 		}]).reverse().slice(0, 10)
-		
+
 		latestTenTransactions.forEach((item: any) => {
 			let transaction = new TransactionDto()
 			transaction.hash = item.hash
@@ -34,7 +35,6 @@ class ProvidersStore extends VuexModule {
 			transaction.timestamp = item.timestamp
 
 			result.push(transaction)
-
 		})
 
 		return result

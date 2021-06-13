@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <smart-contract-details/>
+      <!-- <smart-contract-details/> -->
   </div>
 </template>
 <script lang="ts">
@@ -15,12 +15,4 @@ import SmartContractDetails from '~/components/SmartContractDetails.vue'
 
 export default class MainPage extends Vue {}
 </script>
-<style>
-.container {
-  background: #F8F9FA;
-  margin: 20px;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-}
-</style>
+<style></style>

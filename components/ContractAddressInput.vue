@@ -11,7 +11,7 @@
         <label for="smartContractAddress">Smart Contract Address:</label>
         <ValidationProvider
           :name="'Smart Contract Address'"
-          rules="required|max:42|isSmartContractAddress"
+          rules="required"
           v-slot="{ errors }"
         >
           <input
@@ -31,22 +31,29 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator"
+import { ethers } from 'ethers'
 
 @Component({})
 export default class ContractAddressInput extends Vue {
   form: any = {
     smartContractAddress: ""
-  };
-
-  // TODO: Validate the address
-  okBtnClicked() {
-    this.$emit("okBtnClicked", this.form.smartContractAddress);
   }
 
-  async mounted() {}
+  okBtnClicked() {
+    try {
+      const validateAddress = ethers.utils.getAddress(this.form.smartContractAddress.toLowerCase())
+      this.$emit("okBtnClicked", validateAddress)
+    } catch(error) {
+      this.$notify({
+        group: 'foo',
+        type: 'error',
+        duration: 2000,
+        title: "Wrong address",
+        text: "The address is wrong or not valid!"
+      })
+    }
+  }
 }
 </script>
-
-<style>
-</style>
+<style></style>

@@ -15,29 +15,29 @@ import Abi from "../../constants/abi/Abi.json"
 
 class SmartContractStore extends VuexModule {
   @Action
-  public async getDetails(smartContractAddress: string,): Promise<SmartContractDetailsDto> {
-    const provider = ethers.getDefaultProvider(PROVIDER_NETWORK, {
-      infura: {
-        projectId: INFURA_PROJECT_ID,
-        projectSecret: INFURA_PROJECT_SECRET
-      }
-    })
+  public async getDetails(smartContractAddress: string, ): Promise<SmartContractDetailsDto> {
+      const provider = ethers.getDefaultProvider(PROVIDER_NETWORK, {
+        infura: {
+          projectId: INFURA_PROJECT_ID,
+          projectSecret: INFURA_PROJECT_SECRET
+        }
+      })
 
-    const readOnlyContract = new ethers.Contract(smartContractAddress, Abi, provider)
-    const contractAddress = readOnlyContract.address
-    const owners = await readOnlyContract.getOwners()
-    const dailyLimit = await readOnlyContract.dailyLimit()
-    const required = await readOnlyContract.required()
-    const balance = await provider.getBalance(contractAddress)
-    const smartContractDetails = new SmartContractDetailsDto()
+      const readOnlyContract = new ethers.Contract(smartContractAddress, Abi, provider)
+      const contractAddress = readOnlyContract.address
+      const owners = await readOnlyContract.getOwners()
+      const dailyLimit = await readOnlyContract.dailyLimit()
+      const required = await readOnlyContract.required()
+      const balance = await provider.getBalance(contractAddress)
+      const smartContractDetails = new SmartContractDetailsDto()
 
-    smartContractDetails.address = contractAddress
-    smartContractDetails.ownersAddresses = owners
-    smartContractDetails.dailyLimit = BigNumber.from(dailyLimit).toString()
-    smartContractDetails.numberOfOwnerSigConfirmTrans = BigNumber.from(required).toString()
-    smartContractDetails.balance = ethers.utils.formatEther(balance)
+      smartContractDetails.address = contractAddress
+      smartContractDetails.ownersAddresses = owners
+      smartContractDetails.dailyLimit = BigNumber.from(dailyLimit).toString()
+      smartContractDetails.numberOfOwnerSigConfirmTrans = BigNumber.from(required).toString()
+      smartContractDetails.balance = ethers.utils.formatEther(balance)
 
-    return smartContractDetails
+      return smartContractDetails
   }
 }
 
