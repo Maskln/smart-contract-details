@@ -4,7 +4,9 @@
       <div>0x3EB01B3391EA15CE752d01Cf3D3F09deC596F650</div>
     </div>
     <div class="row">
-      <contract-address-input @okBtnClicked="smartContractAddressClicked" />
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <contract-address-input @okBtnClicked="smartContractAddressClicked" />
+      </div>
     </div>
   </div>
 </template>
@@ -18,12 +20,12 @@ import {
   PROVIDER_NETWORK,
   INFURA_PROJECT_ID,
   INFURA_PROJECT_SECRET
-} from "~/constants/constants";
-import { ethers, utils } from "ethers";
-import Abi from "../constants/abi/Abi.json";
+} from "~/constants/constants"
+import { ethers, utils } from "ethers"
+import Abi from "../constants/abi/Abi.json"
 import { sortBy } from 'lodash'
-import ProvidersModule from '../store/modules/ProvidersStrore'
-import TransactionDto from '~/models/dtos/TransactionDto'
+import ProvidersModule from "../store/modules/ProvidersStrore"
+import TransactionDto from "~/models/dtos/TransactionDto"
 
 @Component({
   components: {

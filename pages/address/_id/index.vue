@@ -2,25 +2,27 @@
   <div v-if="!isLoading">
     <div class="container">
       <div class="row">
+        <div class="col-1">
         <button type="button" @click="$router.back()">X</button>
+        </div>
       </div>
       <div class="row">
-        <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+        <div class="col-md-8 mb-3 mb-md-0">
           <b-card title="Contract Details" tag="article" class="mb-2">
             <b-card-text v-if="smContracktDetails">
-              <div class="row">
-                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+              <div class="row align-items-center">
+                <div class="col-md-4 mb-1 mb-md-0">
                   <label for>Address:</label>
                 </div>
-                <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                <div class="col-md-8">
                   <span>{{smContracktDetails.address}}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="col-md-4 mb-1 mb-md-0">
                   <label for>Owners:</label>
                 </div>
-                <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                <div class="col-md-8">
                   <ul>
                     <li
                       v-for="item in smContracktDetails.ownersAddresses"
@@ -30,26 +32,26 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="col-md-4 mb-1 mb-md-0">
                   <label for>Daily limit:</label>
                 </div>
-                <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                <div class="col-md-8">
                   <span>{{smContracktDetails.dailyLimit}}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="col-md-4 mb-1 mb-md-0">
                   <label for>Confirmation number:</label>
                 </div>
-                <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                <div class="col-md-8">
                   <span>{{smContracktDetails.numberOfOwnerSigConfirmTrans}}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="col-md-4 mb-1 mb-md-0">
                   <label for>Balance:</label>
                 </div>
-                <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+                <div class="col-md-8">
                   <span>{{smContracktDetails.balance}}</span>
                 </div>
               </div>
@@ -58,19 +60,38 @@
         </div>
       </div>
       <div class="row">
-        <div v-if="transtactions.length" class="coll-12">
-          <b-table responsive hover :items="transtactions"></b-table>
+        <div v-if="transtactions.length" class="col-12">
+          <md-table md-card>
+            <md-table-toolbar>
+              <h1 class="md-title">Latest 10 Transactions</h1>
+            </md-table-toolbar>
+
+            <md-table-row>
+              <md-table-head md-numeric>Hash</md-table-head>
+              <md-table-head>Status</md-table-head>
+              <md-table-head>Block Number</md-table-head>
+              <md-table-head>Timestamp</md-table-head>
+              <md-table-head>From</md-table-head>
+              <md-table-head>To</md-table-head>
+              <md-table-head>Value</md-table-head>
+            </md-table-row>
+
+            <md-table-row v-for="item in transtactions" :key="item.key">
+              <md-table-cell>{{item.hash}}</md-table-cell>
+              <md-table-cell>{{item.status}}</md-table-cell>
+              <md-table-cell>{{item.blockNumber}}</md-table-cell>
+              <md-table-cell>{{item.timestamp}}</md-table-cell>
+              <md-table-cell>{{item.from}}</md-table-cell>
+              <md-table-cell>{{item.to}}</md-table-cell>
+              <md-table-cell>{{item.value}} Ethers</md-table-cell>
+            </md-table-row>
+          </md-table>
         </div>
       </div>
     </div>
   </div>
-  <div v-else style="width: 100%; height: 100vh; margin: 0 auto;">
-    <b-spinner
-      style="width: 10rem; height: 10rem;"
-      label="Large Spinner"
-      :variant="'info'"
-      type="grow"
-    ></b-spinner>
+  <div v-else>
+    <md-progress-spinner :md-diameter="100" :md-stroke="10" md-mode="indeterminate"></md-progress-spinner>
   </div>
 </template>
 
