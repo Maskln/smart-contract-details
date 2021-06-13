@@ -2,7 +2,7 @@
   <div v-if="!isLoading">
     <div class="container">
       <div class="row">
-        <button type="button" @click="$router.back()">Back</button>
+        <button type="button" @click="$router.back()">X</button>
       </div>
       <div class="row">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
@@ -75,26 +75,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator"
-import ContractAddressInput from "~/components/ContractAddressInput.vue"
-import SmartContractDetailsDto from "~/models/dtos/SmartContractDetailsDto"
-import SmartContractModule from "~/store/modules/SmartContractStore"
-import {
-  PROVIDER_NETWORK,
-  INFURA_PROJECT_ID,
-  INFURA_PROJECT_SECRET
-} from "~/constants/constants"
-import { ethers, utils } from "ethers"
-import Abi from "~/constants/abi/Abi.json"
-import { sortBy } from "lodash"
-import ProvidersModule from "~/store/modules/ProvidersStrore"
-import TransactionDto from "~/models/dtos/TransactionDto"
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import SmartContractDetailsDto from "~/models/dtos/SmartContractDetailsDto";
+import SmartContractModule from "~/store/modules/SmartContractStore";
+import ProvidersModule from "~/store/modules/ProvidersStrore";
+import TransactionDto from "~/models/dtos/TransactionDto";
 
-@Component({
-  components: {
-    ContractAddressInput
-  }
-})
+@Component({})
 export default class SmartContractDetailsPage extends Vue {
   isLoading: boolean = false
   smartContractDetails: SmartContractDetailsDto | null = null
@@ -114,22 +101,23 @@ export default class SmartContractDetailsPage extends Vue {
     this.isLoading = true
     try {
       this.smartContractDetails = await SmartContractModule.getDetails(address)
-      this.latestTenTransactions = await ProvidersModule.getLatestTenTransactions(address)
-    } catch(error) {
-      console.log(error)
+      this.latestTenTransactions = await ProvidersModule.getLatestTenTransactions(
+        address
+      )
+
+      this.isLoading = false
+    } catch (error) {
       this.$notify({
-        group: 'foo',
-        type: 'error',
+        group: "foo",
+        type: "error",
         duration: 2000,
         title: "Wrong address",
         text: "The address is not valid Multisig contract!"
-      })
+      });
 
-      this.$router.push({path: '/'})
+      this.$router.push({ path: "/" })
       return
     }
-
-    this.isLoading = false
   }
 }
 </script>

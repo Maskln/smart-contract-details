@@ -1,8 +1,9 @@
 export default class TansactionDto {
 	hash: string = ''
-	from: string = ''
-	to: string = ''
-	//TODO: transaction status here
+	status: number = 0
 	blockNumber: number = 0
 	timestamp: number = 0
+	from: string = ''
+	to: string = ''
+	value: string = ''
 }

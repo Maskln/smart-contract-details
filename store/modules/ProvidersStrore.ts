@@ -2,8 +2,8 @@ import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-dec
 import { store } from '../../store'
 import TransactionDto from '~/models/dtos/TransactionDto'
 import { ethers, BigNumber } from 'ethers'
-
 import { sortBy } from 'lodash'
+import { PROVIDER_NETWORK, INFURA_PROJECT_ID, INFURA_PROJECT_SECRET } from '~/constants/constants'
 
 @Module({
 	dynamic: true,
@@ -36,6 +36,28 @@ class ProvidersStore extends VuexModule {
 
 			result.push(transaction)
 		})
+
+		const provider = ethers.getDefaultProvider(PROVIDER_NETWORK, {
+			infura: {
+				projectId: INFURA_PROJECT_ID,
+				projectSecret: INFURA_PROJECT_SECRET
+			}
+		})
+
+		for (let i = 0; i < result.length; i += 1) {
+			let test: [Promise<any>, Promise<any>] = [
+				provider.getTransactionReceipt(result[i].hash),
+				provider.getTransaction(result[i].hash)
+			]
+
+			Promise.all(test).then((results: any[]) => {
+				if (typeof results[0].status !== "undefined") {
+					result[i].status = results[0].status;
+				}
+
+				result[i].value = BigNumber.from(results[1].value).toString()
+			})
+		}
 
 		return result
 	}
