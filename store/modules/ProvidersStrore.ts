@@ -45,18 +45,13 @@ class ProvidersStore extends VuexModule {
 		})
 
 		for (let i = 0; i < result.length; i += 1) {
-			let test: [Promise<any>, Promise<any>] = [
-				provider.getTransactionReceipt(result[i].hash),
-				provider.getTransaction(result[i].hash)
-			]
+			let [trReceipt, transaction] = await Promise.all([provider.getTransactionReceipt(result[i].hash), provider.getTransaction(result[i].hash)])
 
-			Promise.all(test).then((results: any[]) => {
-				if (typeof results[0].status !== "undefined") {
-					result[i].status = results[0].status;
-				}
+			if(typeof trReceipt.status !== "undefined") {
+				result[i].status = trReceipt.status
+			}
 
-				result[i].value = BigNumber.from(results[1].value).toString()
-			})
+			result[i].value = BigNumber.from(transaction.value).toString()
 		}
 
 		return result

@@ -1,0 +1,50 @@
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: "Fira Sans", sans-serif;
+}
+
+body {
+	padding: 20px !important;
+	background: #f8f9fa;
+}
+
+.container {
+	margin: 2rem;
+}
+
+@media only screen and (max-width: 769px;
+) {
+	.container {
+		margin: 0;
+	}
+}
+
+.vue-notification-group {
+	bottom: 1rem !important;
+	right: 1rem !important;
+}
+
+.input-wrapper {
+	display: flex;
+	align-items: center;
+}
+
+.md-layout {
+	margin-bottom: 1rem;
+}
+
+.md-layout-item {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.md-card-content .md-layout-item {
+	border-bottom: 1px solid lightgrey;
+}
+
+.md-title, .md-table-head-label {
+	color: #2285C6 !important;
+}
