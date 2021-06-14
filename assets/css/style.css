@@ -35,7 +35,7 @@ body {
 	margin-bottom: 1rem;
 }
 
-.md-layout-item {
+.md-layout-item, .md-layout-item li {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -47,4 +47,14 @@ body {
 
 .md-title, .md-table-head-label {
 	color: #2285C6 !important;
+}
+
+.md-chip.success {
+	background-color: #e7f9f6 !important;
+	color: #00C9A7 !important;
+}
+
+.md-chip.failed {
+	background-color: #f9dbdb !important;
+	color: #ff475c !important;
 }

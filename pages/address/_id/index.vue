@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="md-layout md-gutter">
-      <div class="md-layout-item md-size-50 md-small-size-100 md-xsmall-size-100">
+      <div class="md-layout-item md-size-55 md-small-size-100 md-xsmall-size-100">
         <md-card v-if="smContracktDetails">
           <md-card-header>
             <div class="md-title">Contract Overview</div>
@@ -108,9 +108,12 @@
 
           <md-table-row v-for="item in transtactions" :key="item.key">
             <md-table-cell>{{item.hash}}</md-table-cell>
-            <md-table-cell>{{item.status}}</md-table-cell>
+            <md-table-cell>
+              <md-chip class="success" v-if="item.status === 1">Success</md-chip>
+              <md-chip class="failed" v-else>Failed</md-chip>
+              </md-table-cell>
             <md-table-cell>{{item.blockNumber}}</md-table-cell>
-            <md-table-cell>{{item.timestamp}}</md-table-cell>
+            <md-table-cell>{{convertTimestamp(item.timestamp)}}</md-table-cell>
             <md-table-cell>{{item.from}}</md-table-cell>
             <md-table-cell>{{item.to}}</md-table-cell>
             <md-table-cell>{{item.value}} Ether</md-table-cell>
@@ -130,6 +133,7 @@ import SmartContractDetailsDto from "~/models/dtos/SmartContractDetailsDto"
 import SmartContractModule from "~/store/modules/SmartContractStore"
 import ProvidersModule from "~/store/modules/ProvidersStrore"
 import TransactionDto from "~/models/dtos/TransactionDto"
+import moment from 'moment'
 
 @Component({
   head(this: SmartContractDetailsPage): object {
@@ -149,6 +153,12 @@ export default class SmartContractDetailsPage extends Vue {
 
   get transtactions(): TransactionDto[] {
     return this.latestTenTransactions
+  }
+
+  convertTimestamp(timestamp: number): string {  
+    let convertedTimestamp = moment.unix(timestamp).startOf('minute').fromNow()  
+
+    return convertedTimestamp
   }
 
   async mounted() {
