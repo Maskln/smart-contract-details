@@ -16,18 +16,18 @@ import { PROVIDER_NETWORK, INFURA_PROJECT_ID, INFURA_PROJECT_SECRET } from '~/co
 class ProvidersStore extends VuexModule {
 	@Action
 	public async getLatestTenTransactions(smartContractAddress: string): Promise<TransactionDto[]> {
-		let etherscanProvider = new ethers.providers.EtherscanProvider()
+		const etherscanProvider = new ethers.providers.EtherscanProvider()
 		let latestTenTransactions: any = []
 		let result: TransactionDto[] = []
 		
-		let history = await etherscanProvider.getHistory(smartContractAddress)
+		const history = await etherscanProvider.getHistory(smartContractAddress)
 
 		latestTenTransactions = sortBy(history, [(e: any) => {
 			return e.blockNumber
 		}]).reverse().slice(0, 10)
 
 		latestTenTransactions.forEach((item: any) => {
-			let transaction = new TransactionDto()
+			const transaction = new TransactionDto()
 			transaction.hash = item.hash
 			transaction.from = item.from
 			transaction.to = item.to
@@ -45,7 +45,7 @@ class ProvidersStore extends VuexModule {
 		})
 
 		for (let i = 0; i < result.length; i += 1) {
-			let [trReceipt, transaction] = await Promise.all([provider.getTransactionReceipt(result[i].hash), provider.getTransaction(result[i].hash)])
+			const [trReceipt, transaction] = await Promise.all([provider.getTransactionReceipt(result[i].hash), provider.getTransaction(result[i].hash)])
 
 			if(typeof trReceipt.status !== "undefined") {
 				result[i].status = trReceipt.status
