@@ -6,16 +6,14 @@
 }
 
 body {
-	padding: 20px !important;
 	background: #f8f9fa;
 }
 
 .container {
-	margin: 2rem;
+	margin: 20px;
 }
 
-@media only screen and (max-width: 769px;
-) {
+@media only screen and (max-width: 769px) {
 	.container {
 		margin: 0;
 	}
@@ -57,4 +55,8 @@ body {
 .md-chip.failed {
 	background-color: #f9dbdb !important;
 	color: #ff475c !important;
+}
+
+form {
+	width: 100%;
 }

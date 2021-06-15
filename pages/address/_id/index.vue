@@ -1,18 +1,18 @@
 <template>
-  <div v-if="!isLoading">
+  <div class="md-app" v-if="!isLoading">
+    <div class="md-layout">
+      <div class="md-layout-item">
+        <contract-address-input />
+      </div>
+    </div>
     <div v-if="smContracktDetails" class="md-layout">
       <div class="md-layout-item">
         <span class="md-title">Contract</span>
         <span class="md-subheading">{{ smContracktDetails.address }}</span>
       </div>
     </div>
-    <div class="md-layout">
-      <div class="md-layout-item">
-        <md-button class="md-raised md-primary" @click="$router.back()">Home</md-button>
-      </div>
-    </div>
     <div class="md-layout md-gutter">
-      <div class="md-layout-item md-size-55 md-small-size-100 md-xsmall-size-100">
+      <div class="md-layout-item md-size-35 md-small-size-50 md-xsmall-size-100">
         <md-card v-if="smContracktDetails">
           <md-card-header>
             <div class="md-title">Contract Overview</div>
@@ -89,7 +89,7 @@
         </md-card>
       </div>
     </div>
-    <div v-if="transtactions.length" class="md-layout md-gutter">
+    <div v-if="transtactions.length" class="md-layout md-size-100 md-gutter">
       <div class="md-layout-item">
         <md-table md-card>
           <md-table-toolbar>
@@ -122,13 +122,14 @@
       </div>
     </div>
   </div>
-  <div v-else class="md-layout md-alignment-center-center">
+  <div v-else class="md-layout md-alignment-center-center" style="min-height: 90vh;">
     <md-progress-spinner :md-diameter="100" :md-stroke="10" md-mode="indeterminate"></md-progress-spinner>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator"
+import ContractAddressInput from '~/components/ContractAddressInput.vue'
 import SmartContractDetailsDto from "~/models/dtos/SmartContractDetailsDto"
 import SmartContractModule from "~/store/modules/SmartContractStore"
 import ProvidersModule from "~/store/modules/ProvidersStrore"
@@ -140,6 +141,9 @@ import moment from 'moment'
     return {
       title: "Contract - " + this.$route.params["id"]
     }
+  },
+  components: {
+    ContractAddressInput
   }
 })
 export default class SmartContractDetailsPage extends Vue {
@@ -187,4 +191,9 @@ export default class SmartContractDetailsPage extends Vue {
   }
 }
 </script>
-<style></style>
+<style scoped>
+.md-app {
+  padding: 20px;
+  flex-direction: column;
+}
+</style>

@@ -4,18 +4,18 @@
     id="ContractAddress"
     enctype="multipart/form-data"
     autocomplete="off"
-    @submit.prevent="okBtnClicked"
+    @submit.prevent="searchBtnClicked"
   >
-    <div class="md-layout">
-      <div
-        class="md-layout-item input-wrapper md-size-50 md-medium-size-100 md-small-size-100 md-xsmall-size-100"
-      >
+    <div class="md-layout md-alignment-center-center">
+      <div class="md-layout-item md-size-30 md-medium-size-33 md-small-size-50 md-xsmall-size-90">
         <md-field>
           <label>Contract address</label>
-          <md-input v-model="form.smartContractAddress" required></md-input>
+          <md-input class="md-size-100" v-model="form.smartContractAddress" required></md-input>
           <span class="md-error">There is an error</span>
         </md-field>
-        <md-button type="submit" class="md-raised md-primary">OK</md-button>
+      </div>
+      <div class="md-layout-item md-size-10 md-medium-size-33 md-small-size-50 md-xsmall-size-30">
+        <md-button type="submit" class="md-raised md-primary">Search</md-button>
       </div>
     </div>
   </form>
@@ -31,7 +31,7 @@ export default class ContractAddressInput extends Vue {
     smartContractAddress: ""
   }
 
-  okBtnClicked() {
+  searchBtnClicked() {
     try {
       const validateAddress = ethers.utils.getAddress(
         this.form.smartContractAddress.toLowerCase()
