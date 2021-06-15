@@ -4,11 +4,11 @@
       <md-app-toolbar class="md-primary">
         <div class="md-toolbar-row">
           <div class="md-toolbar-section-start">
-            <span class="md-title">Smart Contract Info</span>
+            <md-button @click="$router.push('/')">Home</md-button>
           </div>
           <div class="md-toolbar-section-middle"></div>
           <div class="md-toolbar-section-end">
-            <md-button @click="$router.push('/')">Home</md-button>
+            <span class="md-title">Smart Contract Info</span>
           </div>
         </div>
       </md-app-toolbar>

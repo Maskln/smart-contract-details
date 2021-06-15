@@ -28,7 +28,8 @@ export default {
   plugins: [
     "@/plugins/vee-validate.ts",
     "@/plugins/vue-material.ts",
-    { src: '@/plugins/vue-notification.ts', ssr: false }
+    { src: '@/plugins/vue-notification.ts', ssr: false },
+    '@plugins/axios-accessor.ts',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -43,7 +44,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
-    "bootstrap-vue/nuxt"
+    "bootstrap-vue/nuxt",
+    '@nuxtjs/axios'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

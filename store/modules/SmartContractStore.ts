@@ -1,9 +1,9 @@
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
+import { VuexModule, Module, Action, getModule } from 'vuex-module-decorators'
 import { store } from '../../store'
 import SmartContractDetailsDto from '~/models/dtos/SmartContractDetailsDto'
-import { ethers, BigNumber } from 'ethers'
-import { PROVIDER_NETWORK, INFURA_PROJECT_ID, INFURA_PROJECT_SECRET } from '~/constants/constants'
-import Abi from "../../constants/abi/Abi.json"
+import { processResponse, createFailResponse } from '../helpers/ResponseHelper'
+import IStoreResult from '../IStoreResult'
+import { $axios } from '~/utils/axios'
 
 @Module({
   dynamic: true,
@@ -15,36 +15,15 @@ import Abi from "../../constants/abi/Abi.json"
 
 class SmartContractStore extends VuexModule {
   @Action
-  public async getDetails(smartContractAddress: string, ): Promise<SmartContractDetailsDto> {
-    const provider = ethers.getDefaultProvider(PROVIDER_NETWORK, {
-      infura: {
-        projectId: INFURA_PROJECT_ID,
-        projectSecret: INFURA_PROJECT_SECRET
-      }
-    })
+  public async getDetails(smartContractAddress: string, ): Promise<IStoreResult<SmartContractDetailsDto>> {
+    try {
+      const url = `http://localhost:8000/contract/${smartContractAddress}`
+      const response = await $axios.get(url)
 
-    const readOnlyContract = new ethers.Contract(smartContractAddress, Abi, provider)
-    const contractAddress = readOnlyContract.address
-    
-    const [owners,
-      dailyLimit,
-      required,
-      balance] = await Promise.all([
-        readOnlyContract.getOwners(),
-        readOnlyContract.dailyLimit(),
-        readOnlyContract.required(),
-        provider.getBalance(contractAddress)
-      ])
-    
-    const smartContractDetails = new SmartContractDetailsDto()
-
-    smartContractDetails.address = contractAddress
-    smartContractDetails.ownersAddresses = owners
-    smartContractDetails.dailyLimit = BigNumber.from(dailyLimit).toString()
-    smartContractDetails.numberOfOwnerSigConfirmTrans = BigNumber.from(required).toString()
-    smartContractDetails.balance = ethers.utils.formatEther(balance)
-
-    return smartContractDetails
+      return processResponse<SmartContractDetailsDto[]>(response)
+    } catch (error) {
+      return createFailResponse(error)
+    }
   }
 }
 

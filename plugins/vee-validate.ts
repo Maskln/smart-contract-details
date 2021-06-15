@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import * as rules from 'vee-validate/dist/rules'
-import {ethers} from 'ethers'
 
 for (let [rule, validation] of Object.entries(rules)) {
 	extend(rule, {

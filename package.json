@@ -9,6 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
     "@types/vue-material": "git+https://github.com/calebsander/vue-material-types.git",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",

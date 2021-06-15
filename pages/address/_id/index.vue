@@ -85,6 +85,23 @@
                 <span>{{smContracktDetails.balance}} Ether</span>
               </div>
             </div>
+            <!-- Value -->
+            <div class="md-layout">
+              <div
+                class="md-layout-item md-size-40 md-medium-size-100 md-small-size-100 md-xsmall-size-100"
+              >
+                <span>Value:</span>
+              </div>
+              <div
+                class="md-layout-item md-size-60 md-medium-size-100 md-small-size-100 md-xsmall-size-100"
+              >
+                <ul>
+                  <li>{{getValue('EUR')}}</li>
+                  <li>{{getValue('USD')}}</li>
+                </ul>
+                
+              </div>
+            </div>
           </md-card-content>
         </md-card>
       </div>
@@ -135,6 +152,9 @@ import SmartContractModule from "~/store/modules/SmartContractStore"
 import ProvidersModule from "~/store/modules/ProvidersStrore"
 import TransactionDto from "~/models/dtos/TransactionDto"
 import moment from 'moment'
+import CoinMarketCapModule from '~/store/modules/CoinMarketCapStore'
+import { EUR_SYMBOL, USD_SYMBOL, ETH_SYMBOL } from '~/constants/constants'
+import CurrencyDto from '~/models/dtos/CurrencyDto'
 
 @Component({
   head(this: SmartContractDetailsPage): object {
@@ -150,6 +170,8 @@ export default class SmartContractDetailsPage extends Vue {
   isLoading: boolean = false
   smartContractDetails: SmartContractDetailsDto | null = null
   latestTenTransactions: TransactionDto[] = []
+  etherUsdPrice: CurrencyDto | null = null
+  etherEurPrice: CurrencyDto | null = null
 
   get smContracktDetails(): SmartContractDetailsDto | null {
     return this.smartContractDetails
@@ -165,16 +187,45 @@ export default class SmartContractDetailsPage extends Vue {
     return convertedTimestamp
   }
 
+  getValue(currency: string): string {
+    let price: number = -1
+    let totalValue = -1
+    let currencySymb = currency === EUR_SYMBOL ? '€' : '$'
+
+    if(currency === EUR_SYMBOL) {
+      if (this.etherEurPrice) {
+        price = this.etherEurPrice.data[ETH_SYMBOL].quote[currency].price
+      }
+    } else {
+      if (this.etherUsdPrice) {
+        price = this.etherUsdPrice.data[ETH_SYMBOL].quote[currency].price
+      }
+    }
+    
+    if (price && this.smContracktDetails) {
+      totalValue = parseFloat(this.smContracktDetails.balance) * price
+    }
+
+    return `${currencySymb} ${totalValue.toFixed(2)} (@ ${currencySymb}${price.toFixed(2)}/ETH)`
+  }
+
   async mounted() {
     let address = this.$route.params["id"]
 
     this.isLoading = true
     try {
-      this.smartContractDetails = await SmartContractModule.getDetails(address)
-      this.latestTenTransactions = await ProvidersModule.getLatestTenTransactions(
-        address
-      )
+      const [smDetailsResp, latestTransResp, eurPriceResp, usdPriceResp ] = await Promise.all([
+        SmartContractModule.getDetails(address), 
+        ProvidersModule.getLatestTenTransactions(address),
+        CoinMarketCapModule.getLatestEtherPriceForGivenCurrency(EUR_SYMBOL),
+        CoinMarketCapModule.getLatestEtherPriceForGivenCurrency(USD_SYMBOL)
+       ])
 
+      this.smartContractDetails = smDetailsResp.isSuccess ? smDetailsResp.data : null
+      this.latestTenTransactions = latestTransResp.isSuccess ? latestTransResp.data : []
+      this.etherEurPrice = eurPriceResp.isSuccess ? eurPriceResp.data : null
+      this.etherUsdPrice = usdPriceResp.isSuccess ? usdPriceResp.data : null
+      
       this.isLoading = false
     } catch (error) {
       this.$notify({
