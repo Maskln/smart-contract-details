@@ -191,6 +191,9 @@ export default class SmartContractDetailsPage extends Vue {
     let price: number = -1
     let totalValue = -1
     let currencySymb = currency === EUR_SYMBOL ? '€' : '$'
+    let totalValueWithCommas = ''
+    let priceValueWithCommas = ''
+    let priceValueWithcCommas = ''
 
     if(currency === EUR_SYMBOL) {
       if (this.etherEurPrice) {
@@ -201,12 +204,21 @@ export default class SmartContractDetailsPage extends Vue {
         price = this.etherUsdPrice.data[ETH_SYMBOL].quote[currency].price
       }
     }
-    
+
+    let priceTwoDigitAfterDecimal = price.toFixed(2)
+    priceValueWithCommas = this.numberWithCommas(parseFloat(priceTwoDigitAfterDecimal))
+
     if (price && this.smContracktDetails) {
       totalValue = parseFloat(this.smContracktDetails.balance) * price
+      let twoDigitAfterDecimal = totalValue.toFixed(2)
+      totalValueWithCommas = this.numberWithCommas(parseFloat(twoDigitAfterDecimal))
     }
 
-    return `${currencySymb} ${totalValue.toFixed(2)} (@ ${currencySymb}${price.toFixed(2)}/ETH)`
+    return `${currencySymb} ${totalValueWithCommas} (@ ${currencySymb}${priceValueWithCommas}/ETH)`
+  }
+
+  numberWithCommas(x: number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   async mounted() {

@@ -1,10 +1,11 @@
-# Stats
-
-## Build Setup
+# Build Setup
 
 ```bash
 # install dependencies
 $ npm install
+
+#Make sure you clone the BE repo from here: https://github.com/Maskln/smart-contract-details-BE
+# Make sutre that CORS is enabled.
 
 # serve with hot reload at localhost:3000
 $ npm run dev
